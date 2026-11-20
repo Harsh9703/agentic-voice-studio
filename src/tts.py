@@ -22,11 +22,12 @@ def generate_speech(text, output_file):
     return output_path
 
 
-text = input("What would you like me to say? ")
+if __name__ == "__main__":
+    text = input("What would you like me to say? ")
 
-saved_file = generate_speech(
-    text,
-    "outputs/speech.mp3"
-)
+    saved_file = generate_speech(
+        text,
+        "outputs/speech.mp3"
+    )
 
-print(f"Audio saved to {saved_file}")
+    print(f"Audio saved to {saved_file}")
