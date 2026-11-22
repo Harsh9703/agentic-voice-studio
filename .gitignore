@@ -225,3 +225,6 @@ __marimo__/
 # Generated audio
 outputs/
 .DS_Store
+
+# Inputs
+inputs/
