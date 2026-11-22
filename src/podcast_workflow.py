@@ -6,6 +6,9 @@ from langgraph.graph import StateGraph, START, END
 
 from tts import generate_speech
 
+from pathlib import Path
+from pypdf import PdfReader
+
 load_dotenv()
 
 llm = ChatOpenAI(model="gpt-5.5")
@@ -20,12 +23,33 @@ class PodcastState(TypedDict):
     audio_path: str
 
 def read_document(state: PodcastState):
-    with open(state["file_path"], "r", encoding="utf-8") as file:
-        text = file.read()
+    file_path = Path(state["file_path"])
+
+    if file_path.suffix.lower() == ".txt":
+        text = file_path.read_text(encoding="utf-8")
+
+    elif file_path.suffix.lower() == ".pdf":
+        reader = PdfReader(file_path)
+
+        pages = []
+
+        for page in reader.pages:
+            page_text = page.extract_text()
+
+            if page_text:
+                pages.append(page_text)
+
+        text = "\n".join(pages)
+
+    else:
+        raise ValueError(
+            f"Unsupported file type: {file_path.suffix}"
+        )
 
     return {
         "document_text": text
     }
+
 
 
 def create_script(state: PodcastState):

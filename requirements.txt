@@ -2,4 +2,6 @@ openai
 python-dotenv
 langgraph
 langchain-openai
+pypdf
+
 
